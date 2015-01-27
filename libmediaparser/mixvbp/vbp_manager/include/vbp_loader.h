@@ -112,6 +112,73 @@ typedef struct _vbp_data_mp42
 } vbp_data_mp42;
 
 /*
+ *  * MPEG2 data structure
+ *   */
+
+typedef struct _vbp_codec_data_mpeg2
+{
+    uint8 profile_and_level_indication;
+
+    // picture_coding_type
+    uint8 frame_type;
+
+    // picture_structure
+    uint8 interlaced;
+
+    // horizontal_size is a 14-bit unsigned integer
+    uint32 frame_width;
+    // vertical_size is a 14-bit unsigned integer
+    uint32 frame_height;
+
+    // a 3-bit integer, 0 for unspecified, PAL/NTSC/SECAM
+    uint8 video_format;
+    // 0 short range, 1 full range
+    uint8 video_range;
+
+    // a 4-bit integer
+    uint8  aspect_ratio;
+    uint32 par_width;
+    uint32 par_height;
+
+    // a 8-bit integer
+    uint8  matrix_coefficients;
+    uint8  load_intra_quantiser_matrix;
+    uint8  load_non_intra_quantiser_matrix;
+
+    // a 30-bit integer
+    int bit_rate;
+
+    // a 4-bit integer
+    int frame_rate;
+} vbp_codec_data_mpeg2;
+
+typedef struct _vbp_slice_data_mpeg2
+{
+    uint8* buffer_addr;
+    uint32 slice_offset;
+    uint32 slice_size;
+    VASliceParameterBufferMPEG2 slice_param;
+} vbp_slice_data_mpeg2;
+
+typedef struct _vbp_picture_data_mpeg2
+{
+    VAPictureParameterBufferMPEG2* pic_parms;
+    vbp_slice_data_mpeg2* slice_data;
+    uint32 num_slices;
+} vbp_picture_data_mpeg2;
+
+typedef struct _vbp_data_mpeg2
+{
+    /* rolling counter of buffers sent by vbp_parse */
+    uint32 buf_number;
+    vbp_codec_data_mpeg2* codec_data;
+    VAIQMatrixBufferMPEG2* iq_matrix_buffer;
+
+    uint32 num_pictures;
+    vbp_picture_data_mpeg2 *pic_data;
+} vbp_data_mpeg2;
+
+/*
  * H.264 data structure
  */
 
