@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 #ifndef VBP_LOADER_H
 #define VBP_LOADER_H
 
@@ -75,6 +76,11 @@ typedef struct _vbp_codec_data_mp42
 
     // bit rate
     int bit_rate;
+
+    // indicate if vol is received
+    uint8 got_vol;
+    // indicate if vop is received
+    uint8 got_vop;
 } vbp_codec_data_mp42;
 
 typedef struct _vbp_slice_data_mp42
@@ -83,6 +89,11 @@ typedef struct _vbp_slice_data_mp42
     uint32 slice_offset;
     uint32 slice_size;
     VASliceParameterBufferMPEG4 slice_param;
+    uint8* cur_frame_addr;
+    uint8* forward_ref_addr;
+    uint8* backward_ref_addr;
+    uint32_t pic_stride;
+    uint32_t pic_height;
 } vbp_slice_data_mp42;
 
 typedef struct _vbp_picture_data_mp42 vbp_picture_data_mp42;
@@ -112,8 +123,8 @@ typedef struct _vbp_data_mp42
 } vbp_data_mp42;
 
 /*
- *  * MPEG2 data structure
- *   */
+ * MPEG2 data structure
+ */
 
 typedef struct _vbp_codec_data_mpeg2
 {
@@ -132,6 +143,7 @@ typedef struct _vbp_codec_data_mpeg2
 
     // a 3-bit integer, 0 for unspecified, PAL/NTSC/SECAM
     uint8 video_format;
+
     // 0 short range, 1 full range
     uint8 video_range;
 
@@ -142,6 +154,7 @@ typedef struct _vbp_codec_data_mpeg2
 
     // a 8-bit integer
     uint8  matrix_coefficients;
+
     uint8  load_intra_quantiser_matrix;
     uint8  load_non_intra_quantiser_matrix;
 
@@ -164,6 +177,7 @@ typedef struct _vbp_picture_data_mpeg2
 {
     VAPictureParameterBufferMPEG2* pic_parms;
     vbp_slice_data_mpeg2* slice_data;
+
     uint32 num_slices;
 } vbp_picture_data_mpeg2;
 
@@ -171,12 +185,15 @@ typedef struct _vbp_data_mpeg2
 {
     /* rolling counter of buffers sent by vbp_parse */
     uint32 buf_number;
+
     vbp_codec_data_mpeg2* codec_data;
     VAIQMatrixBufferMPEG2* iq_matrix_buffer;
 
     uint32 num_pictures;
+
     vbp_picture_data_mpeg2 *pic_data;
 } vbp_data_mpeg2;
+
 
 /*
  * H.264 data structure
@@ -195,6 +212,7 @@ typedef struct _vbp_codec_data_h264
     uint8 constraint_set2_flag;
     uint8 constraint_set3_flag;
     uint8 constraint_set4_flag;
+    uint8 constraint_set5_flag;
 
     uint8 num_ref_frames;
     uint8 gaps_in_frame_num_value_allowed_flag;
@@ -393,6 +411,9 @@ typedef struct _vbp_codec_data_vp8
     uint8 version_num;
     int show_frame;
 
+    /* color space type specification */
+    int clr_type;
+
     uint32 frame_width;
     uint32 frame_height;
 
@@ -538,5 +559,7 @@ uint32 vbp_flush(Handle hcontent);
 */
 uint32 vbp_update(Handle hcontext, void *newdata, uint32 size, void **data);
 #endif
+
+uint32 vbp_decode(Handle hcontext, void *picdata);
 
 #endif /* VBP_LOADER_H */
