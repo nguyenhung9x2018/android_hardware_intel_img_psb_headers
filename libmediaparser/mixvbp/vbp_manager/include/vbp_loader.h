@@ -96,12 +96,10 @@ typedef struct _vbp_slice_data_mp42
     uint32 slice_size;
     VASliceParameterBufferMPEG4 slice_param;
     uint8* cur_frame_addr;
-#ifndef ASUS_ZENFONE2_LP_BLOBS
     uint8* forward_ref_addr;
     uint8* backward_ref_addr;
     uint32_t pic_stride;
     uint32_t pic_height;
-#endif
 } vbp_slice_data_mp42;
 
 typedef struct _vbp_picture_data_mp42 vbp_picture_data_mp42;
