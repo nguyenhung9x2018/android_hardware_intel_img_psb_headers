@@ -3,6 +3,10 @@ LOCAL_PATH := $(call my-dir)
 
 ifneq (,$(filter $(TARGET_BOARD_PLATFORM),moorefield clovertrail))
 
+ifeq ($(BOARD_USES_PRE_ION_X86),true)
+   LOCAL_CFLAGS += -DPRE_ION_X86
+endif
+
 include $(CLEAR_VARS)
 LOCAL_COPY_HEADERS := \
     libmediaparser/mixvbp/vbp_manager/include/vbp_loader.h

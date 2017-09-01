@@ -74,14 +74,14 @@ typedef struct _vbp_codec_data_mp42
     uint8   par_width;
     uint8   par_height;
 
-#ifdef ASUS_ZENFONE2_LP_BLOBS
+#ifdef PRE_ION_X86
     int wtf_did_they_add_here;
 #endif
 
     // bit rate
     int bit_rate;
 
-#ifndef ASUS_ZENFONE2_LP_BLOBS
+#ifndef PRE_ION_X86
     // indicate if vol is received
     uint8 got_vol;
     // indicate if vop is received
@@ -218,7 +218,7 @@ typedef struct _vbp_codec_data_h264
     uint8 constraint_set2_flag;
     uint8 constraint_set3_flag;
     uint8 constraint_set4_flag;
-#ifndef ASUS_ZENFONE2_LP_BLOBS
+#ifndef PRE_ION_X86
     uint8 constraint_set5_flag;
 #endif
 
